@@ -3,7 +3,9 @@
 // =============================================================
 @use '@angular/material' as mat;
 @use 'variables' as *;
+@use 'mixins' as *;
 @use 'buttons';
+
 
 // -------------------------------------------------------------
 // Tema do Angular Material
@@ -58,4 +60,9 @@ body {
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+// Texto só para leitores de tela (ex.: título da coluna de ações)
+.visualmente-oculto {
+  @include visualmente-oculto;
 }

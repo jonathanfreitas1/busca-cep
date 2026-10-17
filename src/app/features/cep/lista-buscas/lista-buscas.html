@@ -1,0 +1,36 @@
+<!-- Região de alerta sempre presente: o leitor de tela anuncia quando o conteúdo muda -->
+<div class="lista-buscas__alerta" role="alert">
+  @if (erro(); as mensagem) {
+    <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">error</mat-icon>
+    <span>{{ mensagem }}</span>
+  }
+</div>
+
+<app-tabela
+  legenda="Buscas realizadas"
+  [colunas]="colunas"
+  [linhas]="buscas()"
+  [rastrearPor]="idDaBusca"
+  [carregando]="carregando()"
+  textoCarregando="Carregando histórico…"
+  textoVazio="Nenhuma busca realizada ainda."
+>
+  <ng-template appCelula="data" [appCelulaDe]="buscas()" let-busca>
+    <time [attr.datetime]="busca.dataHora.toISOString()">
+      {{ busca.dataHora | date: 'dd/MM/yyyy - HH:mm' }}
+    </time>
+  </ng-template>
+
+  <ng-template appCelula="acoes" [appCelulaDe]="buscas()" let-busca>
+    <button
+      matButton="filled"
+      type="button"
+      class="lista-buscas__remover"
+      [attr.data-cep]="busca.cep"
+      [attr.aria-label]="'Remover busca do CEP ' + busca.cep"
+      (click)="remover.emit(busca)"
+    >
+      <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">close</mat-icon>
+    </button>
+  </ng-template>
+</app-tabela>

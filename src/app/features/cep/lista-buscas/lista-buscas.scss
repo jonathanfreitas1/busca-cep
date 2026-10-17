@@ -1,0 +1,26 @@
+@use 'variables' as *;
+
+.lista-buscas__alerta {
+  display: flex;
+  align-items: center;
+  gap: $espaco-2;
+  margin-bottom: $espaco-3;
+  color: var(--mat-sys-error);
+  font: var(--mat-sys-body-large);
+
+  &:empty {
+    display: none;
+  }
+}
+
+// Botão quadrado só com o ícone "X" (o padrão de cor vem do _buttons.scss)
+.lista-buscas__remover {
+  min-width: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+
+  mat-icon {
+    margin: 0;
+  }
+}

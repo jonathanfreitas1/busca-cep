@@ -2,7 +2,9 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BuscaCep } from '../busca-cep/busca-cep';
+import { ListaBuscas } from '../lista-buscas/lista-buscas';
 import { Busca } from '../models/busca.model';
+import { Endereco } from '../models/endereco.model';
 import { BuscasStore } from '../services/buscas.store';
 import { CepPage } from './cep-page';
 
@@ -17,6 +19,19 @@ class BuscasStoreFalso {
   readonly buscarCep = vi.fn();
   readonly remover = vi.fn();
 }
+
+const BUSCA = new Busca(
+  'id-1',
+  new Endereco({
+    cep: '01001-000',
+    logradouro: 'Praça da Sé',
+    complemento: '',
+    bairro: 'Sé',
+    localidade: 'São Paulo',
+    uf: 'SP',
+  }),
+  new Date(2026, 9, 16),
+);
 
 describe('CepPage', () => {
   let fixture: ComponentFixture<CepPage>;
@@ -34,6 +49,7 @@ describe('CepPage', () => {
   });
 
   const formulario = () => fixture.debugElement.query(By.directive(BuscaCep));
+  const listaDeBuscas = () => fixture.debugElement.query(By.directive(ListaBuscas));
 
   it('deve exibir o título da página', () => {
     const titulo = fixture.nativeElement.querySelector('h1') as HTMLElement;
@@ -61,5 +77,23 @@ describe('CepPage', () => {
     const buscaCep = formulario().componentInstance as BuscaCep;
     expect(buscaCep.buscando()).toBe(true);
     expect(buscaCep.erro()).toBe('CEP não encontrado.');
+  });
+
+  it('deve repassar à lista as buscas e o estado do histórico', async () => {
+    store.buscas.set([BUSCA]);
+    store.erroHistorico.set('Não foi possível acessar o histórico de buscas.');
+    await fixture.whenStable();
+
+    const lista = listaDeBuscas().componentInstance as ListaBuscas;
+    expect(lista.buscas()).toEqual([BUSCA]);
+    expect(lista.erro()).toBe('Não foi possível acessar o histórico de buscas.');
+  });
+
+  it('deve repassar ao store a busca que a lista pediu para remover', () => {
+    const lista = listaDeBuscas().componentInstance as ListaBuscas;
+
+    lista.remover.emit(BUSCA);
+
+    expect(store.remover).toHaveBeenCalledWith(BUSCA);
   });
 });

@@ -1,0 +1,127 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+:host {
+  display: block;
+}
+
+// =============================================================
+// Mobile-first: no celular, cada linha vira um "cartão" empilhado.
+// A partir de md, volta a ser uma tabela tradicional.
+// =============================================================
+.tabela {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+
+  tbody,
+  tr,
+  td {
+    display: block;
+  }
+}
+
+.tabela__legenda {
+  display: block;
+  margin-bottom: $espaco-3;
+  font: var(--mat-sys-title-large);
+  text-align: left;
+}
+
+// No modo cartão, o cabeçalho fica só para leitores de tela:
+// cada célula mostra o próprio rótulo (data-label)
+.tabela__cabecalho {
+  @include visualmente-oculto;
+}
+
+.tabela__linha {
+  padding: $espaco-3;
+  margin-bottom: $espaco-3;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $raio-borda;
+}
+
+.tabela__celula {
+  padding-block: $espaco-1;
+
+  // Rótulo da célula no modo cartão: pseudo-elemento que lê o atributo data-label
+  &[data-label]::before {
+    content: attr(data-label) ': ';
+    font-weight: 500;
+  }
+}
+
+.tabela__aviso {
+  padding: $espaco-3;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+// =============================================================
+// Tabela tradicional (telas médias em diante)
+// =============================================================
+@include a-partir-de(md) {
+  .tabela {
+    display: table;
+
+    tbody {
+      display: table-row-group;
+    }
+
+    tr {
+      display: table-row;
+    }
+
+    th,
+    td {
+      display: table-cell;
+    }
+  }
+
+  // Sem isto, o display: block do modo cartão jogaria o título para baixo do cabeçalho
+  .tabela__legenda {
+    display: table-caption;
+  }
+
+  .tabela__cabecalho {
+    @include visualmente-oculto(false);
+    display: table-header-group;
+  }
+
+  .tabela th {
+    padding: $espaco-2 $espaco-3;
+    border-bottom: 2px solid var(--mat-sys-outline-variant);
+    font: var(--mat-sys-title-small);
+    text-align: left;
+  }
+
+  .tabela__linha {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    transition: background-color $transicao;
+
+    &:nth-child(even) {
+      background-color: var(--mat-sys-surface-container-low);
+    }
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container);
+    }
+  }
+
+  .tabela__celula {
+    padding: $espaco-2 $espaco-3;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    vertical-align: middle;
+
+    &[data-label]::before {
+      content: none;
+    }
+  }
+
+  .tabela__celula--compacta {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+  }
+}

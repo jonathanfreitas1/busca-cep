@@ -8,19 +8,11 @@
   />
 </section>
 
-<!-- PROVISÓRIO (T12): substituído pela tabela do componente ListaBuscas na T14 -->
-<section class="cep-page__secao" aria-labelledby="titulo-buscas">
-  <h2 id="titulo-buscas">Buscas realizadas</h2>
-
-  @if (store.erroHistorico(); as erro) {
-    <p role="alert">{{ erro }}</p>
-  }
-
-  <ul>
-    @for (busca of store.buscas(); track busca.id) {
-      <li>{{ busca.cep }} — {{ busca.endereco.descricao }}</li>
-    } @empty {
-      <li>Nenhuma busca realizada.</li>
-    }
-  </ul>
+<section class="cep-page__secao" aria-label="Histórico de buscas">
+  <app-lista-buscas
+    [buscas]="store.buscas()"
+    [carregando]="store.carregandoHistorico()"
+    [erro]="store.erroHistorico()"
+    (remover)="store.remover($event)"
+  />
 </section>

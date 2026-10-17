@@ -1,0 +1,63 @@
+<!--
+  Os papéis ARIA (role="table", "row", "cell"...) repetem o que o HTML já diz.
+  São necessários porque o modo "cartão" (celular) muda o "display" da tabela
+  via CSS, e alguns navegadores (ex.: Safari) deixam de anunciá-la como tabela.
+-->
+<table class="tabela" role="table">
+  <caption class="tabela__legenda">
+    <span>{{ legenda() }}</span>
+  </caption>
+
+  <thead class="tabela__cabecalho" role="rowgroup">
+    <tr role="row">
+      @for (coluna of colunas(); track coluna.chave) {
+        <th
+          role="columnheader"
+          scope="col"
+          [class.tabela__celula--compacta]="coluna.compacta"
+          [class.visualmente-oculto]="coluna.tituloOculto"
+        >
+          {{ coluna.titulo }}
+        </th>
+      }
+    </tr>
+  </thead>
+
+  <tbody role="rowgroup">
+    @if (carregando()) {
+      <tr role="row">
+        <td role="cell" class="tabela__aviso" [attr.colspan]="colunas().length">
+          {{ textoCarregando() }}
+        </td>
+      </tr>
+    } @else {
+      @for (linha of linhas(); track rastrearPor()(linha)) {
+        <tr role="row" class="tabela__linha" [attr.data-id]="rastrearPor()(linha)">
+          @for (coluna of colunas(); track coluna.chave) {
+            <td
+              role="cell"
+              class="tabela__celula"
+              [class.tabela__celula--compacta]="coluna.compacta"
+              [attr.data-label]="coluna.tituloOculto ? null : coluna.titulo"
+            >
+              @if (moldes().get(coluna.chave); as molde) {
+                <ng-container
+                  [ngTemplateOutlet]="molde"
+                  [ngTemplateOutletContext]="{ $implicit: linha }"
+                />
+              } @else {
+                {{ coluna.valor?.(linha) }}
+              }
+            </td>
+          }
+        </tr>
+      } @empty {
+        <tr role="row">
+          <td role="cell" class="tabela__aviso" [attr.colspan]="colunas().length">
+            {{ textoVazio() }}
+          </td>
+        </tr>
+      }
+    }
+  </tbody>
+</table>
