@@ -62,9 +62,12 @@
   }
 }
 
+// Fundo e texto andam em par (container / on-container): no alto contraste
+// o container fica escuro e o texto precisa clarear junto
 @keyframes linha-destaque {
   from {
     background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
   }
 }
 

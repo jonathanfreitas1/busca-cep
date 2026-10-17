@@ -5,10 +5,13 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 @use 'buttons';
+@use 'theme-colors';
 
 // -------------------------------------------------------------
 // Tema do Angular Material
 // Gera as variáveis CSS --mat-sys-* usadas pelos componentes.
+// Paletas geradas a partir do bordô da marca com
+// `ng generate @angular/material:theme-color` (_theme-colors.scss).
 // https://material.angular.dev/guide/theming
 // -------------------------------------------------------------
 html {
@@ -16,13 +19,27 @@ html {
   @include mat.theme(
     (
       color: (
-        primary: mat.$rose-palette,
-        tertiary: mat.$red-palette,
+        primary: theme-colors.$primary-palette,
+        tertiary: theme-colors.$tertiary-palette,
       ),
       typography: Roboto,
       density: 0,
     )
   );
+
+  // No tema claro o Material 3 usa o tom 40 da paleta (#ab3527) como "primary".
+  // Fixa o bordô exato da marca, o mesmo do header e dos contornos de foco.
+  @include mat.theme-overrides(
+    (
+      primary: $cor-marca,
+    )
+  );
+
+  // Quem pede mais contraste no sistema recebe as cores de alto contraste
+  // geradas junto com a paleta (texto preto puro, bordô mais escuro etc.)
+  @media (prefers-contrast: more) {
+    @include theme-colors.high-contrast-overrides(light);
+  }
 }
 
 // -------------------------------------------------------------
