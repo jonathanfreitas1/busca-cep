@@ -1,0 +1,41 @@
+{
+  "buscas": [
+    {
+      "id": "exemplo-1",
+      "dataHora": "2026-10-16T14:05:00.000Z",
+      "endereco": {
+        "cep": "69945-000",
+        "logradouro": "",
+        "complemento": "",
+        "bairro": "",
+        "localidade": "Acrelândia",
+        "uf": "AC"
+      }
+    },
+    {
+      "id": "exemplo-2",
+      "dataHora": "2026-10-17T09:40:00.000Z",
+      "endereco": {
+        "cep": "70040-010",
+        "logradouro": "Quadra SBN Quadra 1",
+        "complemento": "",
+        "bairro": "Asa Norte",
+        "localidade": "Brasília",
+        "uf": "DF"
+      }
+    },
+    {
+      "id": "exemplo-3",
+      "dataHora": "2026-10-17T18:22:00.000Z",
+      "endereco": {
+        "cep": "01001-000",
+        "logradouro": "Praça da Sé",
+        "complemento": "lado ímpar",
+        "bairro": "Sé",
+        "localidade": "São Paulo",
+        "uf": "SP"
+      }
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

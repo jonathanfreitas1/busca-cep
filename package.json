@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "api": "json-server db.json --port 3000"
   },
   "private": true,
   "packageManager": "npm@11.19.1",
@@ -28,6 +29,7 @@
     "@angular/cli": "^22.2.3",
     "@angular/compiler-cli": "^22.2.0",
     "jsdom": "^30.0.0",
+    "json-server": "1.0.0-beta.15",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
     "vitest": "^5.0.0"

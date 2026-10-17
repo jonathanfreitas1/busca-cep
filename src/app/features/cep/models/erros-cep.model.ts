@@ -21,3 +21,11 @@ export class ViaCepIndisponivelError extends Error {
     this.name = 'ViaCepIndisponivelError';
   }
 }
+
+/** Não foi possível acessar a API do histórico de buscas (ex.: json-server desligado). */
+export class HistoricoIndisponivelError extends Error {
+  constructor(causa?: unknown) {
+    super('Histórico de buscas indisponível', { cause: causa });
+    this.name = 'HistoricoIndisponivelError';
+  }
+}
