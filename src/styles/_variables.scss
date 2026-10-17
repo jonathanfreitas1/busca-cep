@@ -1,0 +1,51 @@
+// =============================================================
+// Variáveis globais de estilo: fonte única de cores e medidas.
+// Uso nos componentes: @use 'variables' as *;
+// =============================================================
+@use 'sass:color';
+
+// -------------------------------------------------------------
+// Cores da marca
+// -------------------------------------------------------------
+$cor-marca: #670000;
+$cor-marca-contraste: #fff;
+
+// -------------------------------------------------------------
+// Botões (requisito: #D7DBDD e escurecer 6% no :hover)
+// -------------------------------------------------------------
+$cor-botao: #d7dbdd;
+$cor-botao-hover: color.adjust($cor-botao, $lightness: -6%);
+$cor-botao-ativo: color.adjust($cor-botao, $lightness: -10%);
+$cor-botao-texto: #212121;
+
+// -------------------------------------------------------------
+// Bordas
+// -------------------------------------------------------------
+$raio-borda: 0.5rem;
+
+// -------------------------------------------------------------
+// Espaçamentos (mesma escala das classes p-* / m-* do Bootstrap)
+// -------------------------------------------------------------
+$espaco-1: 0.25rem;
+$espaco-2: 0.5rem;
+$espaco-3: 1rem;
+$espaco-4: 1.5rem;
+$espaco-5: 3rem;
+
+// -------------------------------------------------------------
+// Transições
+// -------------------------------------------------------------
+$transicao-duracao: 200ms;
+$transicao-curva: ease-in-out;
+$transicao: $transicao-duracao $transicao-curva;
+
+// -------------------------------------------------------------
+// Breakpoints (mesmos do Bootstrap, alinhados com col-sm/md/lg...)
+// -------------------------------------------------------------
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);
