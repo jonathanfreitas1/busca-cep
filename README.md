@@ -1,59 +1,159 @@
-# BuscaCep
+# Busca CEP — Teste de front-end SCCON
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.3.
+SPA para buscar endereços pelo CEP, usando a API pública do [ViaCEP](https://viacep.com.br/), e manter um histórico das buscas realizadas.
 
-## Development server
+Desenvolvido por **Jonathan da Silva Freitas**.
 
-To start a local development server, run:
+## Funcionalidades
 
-```bash
-ng serve
-```
+- **Home** com boas-vindas, nome e data, e um botão que leva à busca.
+- **Header** com o logo e o menu (Home e Endereços › Buscar Endereços), fixo no topo, no bordô `#670000`.
+- **Busca por CEP** com Reactive Forms: máscara `00000-000` enquanto digita, validação por regex e borda vermelha com mensagem quando o CEP é inválido. A requisição ao ViaCEP só sai com o CEP válido.
+- **Tratamento de erros**: CEP inexistente, ViaCEP fora do ar (com timeout de 10 s) e falha ao salvar ou carregar o histórico, cada um com sua mensagem.
+- **Histórico de buscas** numa tabela com CEP, Endereço, Data e um botão para remover (com confirmação). A tabela atualiza sem recarregar a página e o histórico persiste após o F5.
+- **Responsivo**: no celular, cada linha da tabela vira um cartão.
+- **Animações**: loader durante a busca, destaque na linha recém-adicionada e transições de hover. Tudo desligado para quem ativa "reduzir movimento" no sistema.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Tecnologias
 
-## Code scaffolding
+|                  |                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| Framework        | Angular 22 (componentes standalone, signals, controle de fluxo nativo)                     |
+| Componentes      | Angular Material 22, com paleta gerada a partir de `#670000`                               |
+| Layout           | Grid do Bootstrap 5 (só o `bootstrap-grid`, sem o CSS global nem o JS)                     |
+| Estilos          | Sass (SCSS) com variáveis e mixins próprios                                                |
+| HTTP e estado    | RxJS (Observables) nos serviços REST; signals para o estado da tela                        |
+| API do histórico | [json-server](https://github.com/typicode/json-server) (REST simulado, dados em `db.json`) |
+| Testes           | Vitest + jsdom, com os harnesses do Angular Material                                       |
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Pré-requisitos
 
-```bash
-ng generate component component-name
-```
+- **Node.js 24** (a versão está no `.nvmrc`; com o nvm, basta `nvm use`)
+- **npm 11**
+- Acesso à internet (o ViaCEP é uma API externa)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Como executar
 
 ```bash
-ng test
+git clone <url-do-repositório>
+cd busca-cep
+npm install
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+A aplicação precisa de **dois terminais**, um para a API do histórico e outro para o Angular:
 
 ```bash
-ng e2e
+# Terminal 1 — API do histórico em http://localhost:3000/buscas
+npm run api
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+```bash
+# Terminal 2 — aplicação em http://localhost:4200
+npm start
+```
 
-## Additional Resources
+O `db.json` já vem com três buscas de exemplo. Como o json-server grava nele, as buscas feitas durante o uso ficam salvas ali.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Testes e build
+
+```bash
+npm test         # 131 testes unitários (Vitest), em 15 arquivos
+npm run build    # build de produção em dist/busca-cep/browser
+```
+
+O build comprova o **lazy load** exigido: a Home (`home-routes`) e a feature de CEP (`cep-routes`) saem em arquivos separados do pacote inicial, baixados só quando o usuário navega até elas.
+
+```
+Initial chunk files | Names         |  Raw size | Estimated transfer size
+chunk-GNCVYSVI.js   | -             | 297.41 kB |                78.69 kB
+chunk-WWDJUV6F.js   | -             |  77.93 kB |                19.53 kB
+styles-LPLZLJ65.css | styles        |  62.83 kB |                 4.56 kB
+chunk-YK3XCA2B.js   | -             |  61.41 kB |                14.92 kB
+main-5AH7KO4A.js    | main          |  35.86 kB |                 9.56 kB
+                    | Initial total | 535.45 kB |               127.27 kB
+
+Lazy chunk files    | Names         |  Raw size | Estimated transfer size
+chunk-VCRYDPT5.js   | cep-routes    | 164.46 kB |                32.20 kB
+chunk-K7ZGOTXP.js   | home-routes   |   1.43 kB |               659 bytes
+```
+
+## Estrutura do projeto
+
+```
+src/
+├── app/
+│   ├── app.ts, app.config.ts, app.routes.ts   # Módulo principal: shell, providers e rotas
+│   ├── core/layout/header/                    # Header (logo + menu)
+│   ├── features/
+│   │   ├── home/                              # Feature Home (lazy)
+│   │   └── cep/                               # Feature de CEP (lazy), em /enderecos
+│   │       ├── cep-page/                      # Página (container): liga o store aos componentes
+│   │       ├── busca-cep/                     # Formulário de busca
+│   │       ├── lista-buscas/                  # Listagem das buscas
+│   │       ├── models/                        # Endereco, Busca, erros e resposta do ViaCEP
+│   │       └── services/                      # ViaCepService, BuscasStore e repositórios
+│   └── shared/                                # Reutilizáveis: tabela genérica, diálogo de
+│                                              # confirmação, máscara e validador de CEP
+└── styles/                                    # Variáveis, mixins, botões e paleta do tema
+```
+
+### Diagrama do PDF → código
+
+| Diagrama                         | Implementação                                        |
+| -------------------------------- | ---------------------------------------------------- |
+| Módulo Principal                 | `src/app/app.ts` + `app.config.ts` + `app.routes.ts` |
+| Componente Header                | `src/app/core/layout/header/`                        |
+| Módulo Home (lazy)               | `src/app/features/home/` (`home.routes.ts`)          |
+| Componente de Home               | `src/app/features/home/home/`                        |
+| Módulo de CEP (lazy)             | `src/app/features/cep/` (`cep.routes.ts`)            |
+| Componente de Busca de CEP       | `src/app/features/cep/busca-cep/`                    |
+| Componente de Listagem de buscas | `src/app/features/cep/lista-buscas/`                 |
+
+## Decisões e desvios do PDF
+
+O PDF pede Angular 5/6. Optei pela versão atual, mantendo todos os requisitos funcionais e de arquitetura. Os desvios são estes:
+
+### Angular 22 em vez de Angular 5/6
+
+O Angular 5/6 está sem suporte desde 2019/2020, exige Node 10 e traz dependências com vulnerabilidades conhecidas.
+
+### Componentes standalone em vez de módulos (`NgModule`)
+
+Cada "módulo" do diagrama virou uma **feature com lazy load** (`loadChildren` + arquivo de rotas). É o padrão recomendado desde o Angular 17, e o lazy load continua real: cada feature é um arquivo separado no build (veja a seção "Testes e build").
+
+### `input()` / `output()` em vez de `@Output()` + `EventEmitter`
+
+São os sucessores oficiais dos decorators, com a mesma comunicação entre componente pai e filho.
+
+### Angular Material + só o grid do Bootstrap 5
+
+O PDF permite Bootstrap 4 ou Angular Material. O Material cobre os componentes de formulário e navegação; como ele não tem grid de layout, o grid do Bootstrap atende o "grid responsivo" sem trazer o CSS global nem o JavaScript do Bootstrap.
+
+### Outras decisões
+
+- **Container e apresentacionais**: só a `CepPage` fala com o estado; `BuscaCep` e `ListaBuscas` recebem dados por `input()` e emitem eventos por `output()`.
+- **Estado em signals** (`BuscasStore`) e **HTTP com Observables**: signals para o que a tela exibe; RxJS (`switchMap`, `timeout`, `catchError`, `finalize`) nos serviços REST.
+- **Repositório abstrato** (`BuscasRepository`) com implementação via json-server (`BuscasApiRepository`): o store não sabe onde o histórico é guardado, e trocar a implementação é uma linha em `cep.routes.ts`.
+- **Máscara e validador próprios** (`appCepMask` e `cepValidator`, com a regex `/^\d{5}-\d{3}$/`), sem bibliotecas extras.
+- **Busca só salva se o ViaCEP encontrou o endereço**; CEP repetido gera uma nova linha, porque é um histórico.
+- **Serviços e models dentro da feature de CEP**, para irem inteiros no arquivo carregado sob demanda.
+- **Tabela genérica** (`Tabela<T>`) em `shared/`: a `ListaBuscas` só define as colunas. Usa `<table>` nativa e, no celular, vira cartões.
+
+## Acessibilidade
+
+- HTML semântico: `header`, `nav`, `main`, `section` com títulos, `footer`, `form` com `role="search"`, `table` com `caption` e `th`.
+- Link "Pular para o conteúdo", navegação completa pelo teclado e gestão de foco (erro → campo; remoção → linha vizinha; diálogo → "Cancelar").
+- Mensagens de erro em regiões `role="alert"`, com ícone e texto (não só cor).
+- Contraste AA em todas as combinações (o menor é 6,16:1) e cores de alto contraste para `prefers-contrast: more`.
+- Auditado com axe-core (WCAG 2.2 AA) sem violações e **100 no Lighthouse** (Acessibilidade).
+
+## Principais desafios
+
+- **Lazy load sem `NgModule`**: manter a separação em "módulos" do diagrama com componentes standalone, comprovando no build que cada feature vira um arquivo à parte.
+- **Tabela responsiva e acessível**: no celular a tabela muda de `display` para virar cartões, e alguns navegadores deixam de anunciá-la como tabela. Os papéis ARIA explícitos resolvem, mas exigiram cuidado com o foco (o alvo do foco passou do `caption` para a própria tabela).
+- **Foco depois de remover**: quando a linha some, o botão que tinha o foco deixa de existir; o foco vai para a linha vizinha ou para a tabela vazia.
+- **Paleta da marca no Material 3**: a paleta gerada a partir de `#670000` usaria um vermelho mais claro como cor principal; o bordô exato foi fixado com `mat.theme-overrides`.
+
+## Observações
+
+- **Logo**: o arquivo `public/images/logo-sccon.svg` é **provisório** (o oficial não foi recebido). Para trocar, basta substituir o arquivo mantendo o nome; se a proporção for diferente de 41 × 43, ajustar `width`/`height` no Header.
