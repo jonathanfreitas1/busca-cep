@@ -23,7 +23,7 @@ describe('App', () => {
     expect(compiled.querySelector('router-outlet')).toBeTruthy();
   });
 
-    it('deve ter a estrutura semântica com header, main e footer', async () => {
+  it('deve ter a estrutura semântica com header, main e footer', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
@@ -44,5 +44,3 @@ describe('App', () => {
     expect(document.activeElement).toBe(compiled.querySelector('main'));
   });
 });
-
-
