@@ -24,6 +24,10 @@ São os sucessores oficiais dos decorators, com a mesma comunicação entre comp
 
 O Angular Material cobre os componentes de formulário e navegação; como ele não tem grid de layout, uso **só o grid** do Bootstrap 5 (sem o CSS global nem o JavaScript), versão compatível com o Angular atual.
 
+### Botão "Remover" do diálogo em vermelho
+
+Todos os botões seguem o padrão `#D7DBDD`, escurecendo 6% no `:hover` e com cantos arredondados, com **uma exceção**: no diálogo que confirma a remoção de uma busca, o botão "Remover" é vermelho (`#ba1a1a`). Destacar a ação destrutiva é uma convenção de usabilidade que evita exclusões por engano. Ele mantém o mesmo formato e o mesmo escurecimento de 6% no `:hover`, e o foco inicial fica no "Cancelar".
+
 ### Diferenciais implementados
 
 - Logo extraído **vetorialmente** do próprio PDF (veja "Principais desafios").
