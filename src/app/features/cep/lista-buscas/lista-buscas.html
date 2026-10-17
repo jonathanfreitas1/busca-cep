@@ -28,7 +28,7 @@
       class="lista-buscas__remover"
       [attr.data-cep]="busca.cep"
       [attr.aria-label]="'Remover busca do CEP ' + busca.cep"
-      (click)="remover.emit(busca)"
+      (click)="pedirRemocao(busca)"
     >
       <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">close</mat-icon>
     </button>

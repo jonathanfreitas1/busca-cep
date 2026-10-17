@@ -1,5 +1,13 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, contentChildren, input, TemplateRef } from '@angular/core';
+import {
+  Component,
+  computed,
+  contentChildren,
+  ElementRef,
+  input,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { CelulaTabela, ContextoCelula } from './celula-tabela';
 import { ColunaTabela } from './coluna-tabela';
 
@@ -34,4 +42,14 @@ export class Tabela<T> {
         this.celulas().map((celula) => [celula.chave(), celula.molde]),
       ),
   );
+
+  private readonly elementoLegenda = viewChild.required<ElementRef<HTMLElement>>('legendaTabela');
+
+  /**
+   * Leva o foco para o título da tabela. Útil quando o elemento que tinha o foco
+   * deixa de existir (ex.: a última linha foi removida).
+   */
+  focarLegenda(): void {
+    this.elementoLegenda().nativeElement.focus();
+  }
 }

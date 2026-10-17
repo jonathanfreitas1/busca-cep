@@ -26,6 +26,13 @@
   margin-bottom: $espaco-3;
   font: var(--mat-sys-title-large);
   text-align: left;
+  border-radius: $raio-borda;
+
+  // Recebe foco só via código; o contorno aparece quando a ação veio do teclado
+  &:focus-visible {
+    outline: 2px solid $cor-marca;
+    outline-offset: $espaco-1;
+  }
 }
 
 // No modo cartão, o cabeçalho fica só para leitores de tela:

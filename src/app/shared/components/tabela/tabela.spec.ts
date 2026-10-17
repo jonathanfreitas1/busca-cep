@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CelulaTabela } from './celula-tabela';
 import { ColunaTabela } from './coluna-tabela';
 import { Tabela } from './tabela';
+import { By } from '@angular/platform-browser';
 
 // A Tabela é genérica: o teste usa um tipo que não tem nada a ver com CEP
 interface Carro {
@@ -114,5 +115,14 @@ describe('Tabela', () => {
     await fixture.whenStable();
 
     expect(textos('tbody td')).toEqual(['Carregando…']);
+  });
+
+  it('deve permitir levar o foco para a legenda', () => {
+    const tabela = fixture.debugElement.query(By.directive(Tabela))
+      .componentInstance as Tabela<Carro>;
+
+    tabela.focarLegenda();
+
+    expect(document.activeElement).toBe(elemento.querySelector('caption'));
   });
 });
