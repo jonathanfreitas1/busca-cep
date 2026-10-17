@@ -1,5 +1,5 @@
 // Configuração de PRODUÇÃO (ng build).
-// A persistência em produção será revista na T20 (deploy / localStorage).
+// URL da API do histórico: troque pela API publicada antes do build (veja "Deploy" no README).
 export const environment = {
   apiUrl: 'http://localhost:3000',
 };

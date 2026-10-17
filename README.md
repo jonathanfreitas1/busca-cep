@@ -35,7 +35,7 @@ Desenvolvido por **Jonathan da Silva Freitas**.
 ## Como executar
 
 ```bash
-git clone <url-do-repositório>
+git clone https://github.com/jonathanfreitas1/busca-cep.git
 cd busca-cep
 npm install
 ```
