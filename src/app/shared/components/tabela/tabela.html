@@ -53,11 +53,13 @@
           }
         </tr>
       } @empty {
-        <tr role="row">
-          <td role="cell" class="tabela__aviso" [attr.colspan]="colunas().length">
-            {{ textoVazio() }}
-          </td>
-        </tr>
+        @if (textoVazio(); as texto) {
+          <tr role="row">
+            <td role="cell" class="tabela__aviso" [attr.colspan]="colunas().length">
+              {{ texto }}
+            </td>
+          </tr>
+        }
       }
     }
   </tbody>

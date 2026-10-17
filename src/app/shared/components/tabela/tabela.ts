@@ -32,7 +32,8 @@ export class Tabela<T> {
   readonly rastrearPor = input<(linha: T) => unknown>((linha) => linha);
   readonly carregando = input(false);
   readonly textoCarregando = input('Carregando…');
-  readonly textoVazio = input('Nenhum registro encontrado.');
+  /** Aviso exibido sem linhas. `null`: nenhum aviso (ex.: quando quem usa já mostra um erro). */
+  readonly textoVazio = input<string | null>('Nenhum registro encontrado.');
 
   /** Moldes de célula declarados por quem usa a tabela, indexados pela chave da coluna. */
   private readonly celulas = contentChildren<CelulaTabela<T>>(CelulaTabela);

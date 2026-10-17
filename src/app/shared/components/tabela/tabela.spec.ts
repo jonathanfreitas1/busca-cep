@@ -26,7 +26,7 @@ const CARROS: readonly Carro[] = [
       [linhas]="carros()"
       [rastrearPor]="porChassi"
       [carregando]="carregando()"
-      textoVazio="Nenhum carro cadastrado."
+      [textoVazio]="textoVazio()"
     >
       <ng-template appCelula="cor" [appCelulaDe]="carros()" let-carro>
         <strong>{{ carro.cor }}</strong>
@@ -37,6 +37,7 @@ const CARROS: readonly Carro[] = [
 class Hospedeiro {
   readonly carros = signal<readonly Carro[]>(CARROS);
   readonly carregando = signal(false);
+  readonly textoVazio = signal<string | null>('Nenhum carro cadastrado.');
   readonly porChassi = (carro: Carro): string => carro.chassi;
   readonly colunas: readonly ColunaTabela<Carro>[] = [
     { chave: 'modelo', titulo: 'Modelo', valor: (carro) => carro.modelo },
@@ -108,6 +109,14 @@ describe('Tabela', () => {
     const aviso = elemento.querySelector('tbody td');
     expect(aviso?.textContent?.trim()).toBe('Nenhum carro cadastrado.');
     expect(aviso?.getAttribute('colspan')).toBe('3');
+  });
+
+  it('não deve exibir aviso de vazio quando textoVazio for null', async () => {
+    fixture.componentInstance.carros.set([]);
+    fixture.componentInstance.textoVazio.set(null);
+    await fixture.whenStable();
+
+    expect(elemento.querySelector('tbody tr')).toBeNull();
   });
 
   it('deve exibir o texto de carregando no lugar das linhas', async () => {

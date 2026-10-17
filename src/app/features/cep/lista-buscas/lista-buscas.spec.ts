@@ -83,6 +83,14 @@ describe('ListaBuscas', () => {
     expect(celulas()).toEqual(['Nenhuma busca realizada ainda.']);
   });
 
+  it('não deve exibir o texto de vazio quando houver erro no histórico', async () => {
+    fixture.componentRef.setInput('buscas', []);
+    fixture.componentRef.setInput('erro', 'Não foi possível acessar o histórico de buscas.');
+    await fixture.whenStable();
+
+    expect(celulas()).toEqual([]);
+  });
+
   it('deve exibir o texto de carregando', async () => {
     fixture.componentRef.setInput('carregando', true);
     await fixture.whenStable();

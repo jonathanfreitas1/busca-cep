@@ -13,7 +13,7 @@
   [rastrearPor]="idDaBusca"
   [carregando]="carregando()"
   textoCarregando="Carregando histórico…"
-  textoVazio="Nenhuma busca realizada ainda."
+  [textoVazio]="textoVazio()"
 >
   <ng-template appCelula="data" [appCelulaDe]="buscas()" let-busca>
     <time [attr.datetime]="busca.dataHora.toISOString()">

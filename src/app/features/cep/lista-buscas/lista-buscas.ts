@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import {
   afterRenderEffect,
   Component,
+  computed,
   ElementRef,
   inject,
   input,
@@ -41,6 +42,11 @@ export class ListaBuscas {
   readonly erro = input<string | null>(null);
   /** Emitido com a busca que o usuário confirmou que quer remover. */
   readonly remover = output<Busca>();
+
+  /** Sem aviso de vazio quando há erro: a lista não está vazia, está indisponível. */
+  protected readonly textoVazio = computed(() =>
+    this.erro() ? null : 'Nenhuma busca realizada ainda.',
+  );
 
   protected readonly colunas: readonly ColunaTabela<Busca>[] = [
     { chave: 'cep', titulo: 'CEP', valor: (busca) => busca.cep },
