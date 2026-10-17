@@ -34,6 +34,8 @@ export class Tabela<T> {
   readonly textoCarregando = input('Carregando…');
   /** Aviso exibido sem linhas. `null`: nenhum aviso (ex.: quando quem usa já mostra um erro). */
   readonly textoVazio = input<string | null>('Nenhum registro encontrado.');
+  /** Identidade (o mesmo valor do `rastrearPor`) da linha que entra com destaque animado. */
+  readonly linhaNova = input<unknown>(null);
 
   /** Moldes de célula declarados por quem usa a tabela, indexados pela chave da coluna. */
   private readonly celulas = contentChildren<CelulaTabela<T>>(CelulaTabela);

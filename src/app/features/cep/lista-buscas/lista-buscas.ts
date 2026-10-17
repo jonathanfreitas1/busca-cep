@@ -40,6 +40,8 @@ export class ListaBuscas {
   readonly carregando = input(false);
   /** Mensagem de erro do histórico (ex.: API indisponível). */
   readonly erro = input<string | null>(null);
+  /** Id da busca recém-salva, que entra na tabela com destaque. */
+  readonly idBuscaNova = input<string | null>(null);
   /** Emitido com a busca que o usuário confirmou que quer remover. */
   readonly remover = output<Busca>();
 

@@ -92,6 +92,16 @@ describe('BuscaCep', () => {
     expect(await botaoBuscar.getText()).toBe('Buscando…');
   });
 
+  it('deve exibir o loader no botão só durante a busca, escondido dos leitores de tela', async () => {
+    const loader = () => fixture.nativeElement.querySelector('.busca-cep__carregando');
+    expect(loader()).toBeNull();
+
+    fixture.componentRef.setInput('buscando', true);
+    await fixture.whenStable();
+
+    expect(loader()?.getAttribute('aria-hidden')).toBe('true');
+  });
+
   it('não deve emitir enquanto uma busca estiver em andamento', async () => {
     await (await campo()).setValue('01001000');
     fixture.componentRef.setInput('buscando', true);

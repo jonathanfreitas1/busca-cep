@@ -27,6 +27,7 @@ const CARROS: readonly Carro[] = [
       [rastrearPor]="porChassi"
       [carregando]="carregando()"
       [textoVazio]="textoVazio()"
+      [linhaNova]="linhaNova()"
     >
       <ng-template appCelula="cor" [appCelulaDe]="carros()" let-carro>
         <strong>{{ carro.cor }}</strong>
@@ -38,6 +39,7 @@ class Hospedeiro {
   readonly carros = signal<readonly Carro[]>(CARROS);
   readonly carregando = signal(false);
   readonly textoVazio = signal<string | null>('Nenhum carro cadastrado.');
+  readonly linhaNova = signal<string | null>(null);
   readonly porChassi = (carro: Carro): string => carro.chassi;
   readonly colunas: readonly ColunaTabela<Carro>[] = [
     { chave: 'modelo', titulo: 'Modelo', valor: (carro) => carro.modelo },
@@ -100,6 +102,19 @@ describe('Tabela', () => {
     expect(elemento.querySelector('table')?.getAttribute('role')).toBe('table');
     expect(elemento.querySelector('tbody tr')?.getAttribute('role')).toBe('row');
     expect(elemento.querySelector('tbody td')?.getAttribute('role')).toBe('cell');
+  });
+
+  it('deve destacar só a linha indicada em linhaNova', async () => {
+    const destacadas = () =>
+      Array.from(elemento.querySelectorAll('.tabela__linha--nova')).map((tr) =>
+        tr.getAttribute('data-id'),
+      );
+    expect(destacadas()).toEqual([]);
+
+    fixture.componentInstance.linhaNova.set('9BHBG51CAKP654321');
+    await fixture.whenStable();
+
+    expect(destacadas()).toEqual(['9BHBG51CAKP654321']);
   });
 
   it('deve exibir o texto de vazio quando não houver linhas', async () => {

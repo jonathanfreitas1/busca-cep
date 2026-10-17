@@ -61,6 +61,23 @@ body {
   box-sizing: border-box;
 }
 
+// -------------------------------------------------------------
+// Movimento reduzido: quem desativou animações no sistema não as vê.
+// Duração quase zero (e não "none") para que os eventos de fim de
+// animação/transição continuem disparando. O Material já detecta essa
+// preferência sozinho e desliga as animações dele.
+// -------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 // Texto só para leitores de tela (ex.: título da coluna de ações)
 .visualmente-oculto {
   @include visualmente-oculto;

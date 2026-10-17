@@ -16,6 +16,19 @@
     }
   }
 
+  // Loader: anel com um trecho transparente, girando ao lado de "Buscando…"
+  &__carregando {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: $espaco-2;
+    vertical-align: -0.125em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: girar 800ms linear infinite;
+  }
+
   &__alerta {
     display: flex;
     align-items: center;
@@ -26,5 +39,11 @@
     &:empty {
       display: none;
     }
+  }
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
   }
 }

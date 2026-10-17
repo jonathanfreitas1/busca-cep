@@ -15,6 +15,7 @@ class BuscasStoreFalso {
   readonly erroBusca = signal<string | null>(null);
   readonly carregandoHistorico = signal(false);
   readonly erroHistorico = signal<string | null>(null);
+  readonly idBuscaNova = signal<string | null>(null);
   readonly carregar = vi.fn();
   readonly buscarCep = vi.fn();
   readonly remover = vi.fn();
@@ -82,11 +83,13 @@ describe('CepPage', () => {
   it('deve repassar à lista as buscas e o estado do histórico', async () => {
     store.buscas.set([BUSCA]);
     store.erroHistorico.set('Não foi possível acessar o histórico de buscas.');
+    store.idBuscaNova.set(BUSCA.id);
     await fixture.whenStable();
 
     const lista = listaDeBuscas().componentInstance as ListaBuscas;
     expect(lista.buscas()).toEqual([BUSCA]);
     expect(lista.erro()).toBe('Não foi possível acessar o histórico de buscas.');
+    expect(lista.idBuscaNova()).toBe(BUSCA.id);
   });
 
   it('deve repassar ao store a busca que a lista pediu para remover', () => {

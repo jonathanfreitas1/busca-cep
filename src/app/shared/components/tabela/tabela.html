@@ -33,7 +33,12 @@
       </tr>
     } @else {
       @for (linha of linhas(); track rastrearPor()(linha)) {
-        <tr role="row" class="tabela__linha" [attr.data-id]="rastrearPor()(linha)">
+        <tr
+          role="row"
+          class="tabela__linha"
+          [class.tabela__linha--nova]="rastrearPor()(linha) === linhaNova()"
+          [attr.data-id]="rastrearPor()(linha)"
+        >
           @for (coluna of colunas(); track coluna.chave) {
             <td
               role="cell"

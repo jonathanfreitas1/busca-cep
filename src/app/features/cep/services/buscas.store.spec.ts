@@ -121,6 +121,15 @@ describe('BuscasStore', () => {
 
       expect(store.erroBusca()).toBeNull();
     });
+
+    it('deve limpar o destaque da busca feita numa visita anterior', () => {
+      buscarNoViaCep.mockReturnValue(of(criarEndereco()));
+      store.buscarCep('01001-000');
+
+      store.carregar();
+
+      expect(store.idBuscaNova()).toBeNull();
+    });
   });
 
   describe('buscarCep', () => {
@@ -138,6 +147,14 @@ describe('BuscasStore', () => {
       expect(primeira.dataHora).toEqual(AGORA);
       expect(store.buscas()).toHaveLength(2);
       expect(store.erroBusca()).toBeNull();
+    });
+
+    it('deve marcar a busca salva como nova, para a tabela destacá-la', () => {
+      buscarNoViaCep.mockReturnValue(of(criarEndereco()));
+
+      store.buscarCep('01001-000');
+
+      expect(store.idBuscaNova()).toBe('servidor-1');
     });
 
     it('deve indicar "buscando" enquanto a consulta não termina', () => {
@@ -179,6 +196,7 @@ describe('BuscasStore', () => {
       store.buscarCep('01001-000');
 
       expect(store.buscas()).toEqual([]);
+      expect(store.idBuscaNova()).toBeNull();
       expect(store.erroBusca()).toBe(
         'O endereço foi encontrado, mas não foi possível salvá-lo no histórico.',
       );

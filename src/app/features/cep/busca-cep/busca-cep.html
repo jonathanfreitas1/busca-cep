@@ -27,6 +27,10 @@
         [disabled]="buscando()"
         disabledInteractive
       >
+        <!-- Só visual: quem usa leitor de tela já ouve "Buscando…" -->
+        @if (buscando()) {
+          <span class="busca-cep__carregando" aria-hidden="true"></span>
+        }
         {{ buscando() ? 'Buscando…' : 'Buscar' }}
       </button>
     </div>

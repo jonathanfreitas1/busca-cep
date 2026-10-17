@@ -48,6 +48,27 @@
   border-radius: $raio-borda;
 }
 
+// Linha recém-adicionada: entra deslizando, com um fundo de destaque que some aos poucos.
+// Os keyframes só têm "from": a animação termina no fundo normal da linha (zebrado incluso).
+.tabela__linha--nova {
+  animation:
+    linha-entra 300ms ease-out,
+    linha-destaque 1.5s ease-out;
+}
+
+@keyframes linha-entra {
+  from {
+    opacity: 0;
+    transform: translateY(-$espaco-2);
+  }
+}
+
+@keyframes linha-destaque {
+  from {
+    background-color: var(--mat-sys-primary-container);
+  }
+}
+
 .tabela__celula {
   padding-block: $espaco-1;
 

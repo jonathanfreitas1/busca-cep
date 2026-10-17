@@ -27,7 +27,8 @@
 :is(button, a)[matButton='filled'] {
   transition:
     background-color $transicao,
-    box-shadow $transicao;
+    box-shadow $transicao,
+    transform $transicao;
 
   // Só em dispositivos com mouse: no toque, o :hover "gruda" depois do toque
   @media (hover: hover) {
@@ -36,8 +37,10 @@
     }
   }
 
+  // Pressionado: escurece mais e "afunda" um pouco
   &:active {
     --mat-button-filled-container-color: #{$cor-botao-ativo};
+    transform: scale(0.97);
   }
 
   &:focus-visible {

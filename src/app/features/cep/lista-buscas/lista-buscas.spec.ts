@@ -76,6 +76,16 @@ describe('ListaBuscas', () => {
     expect(botao?.getAttribute('aria-label')).toBe('Remover busca do CEP 01001-000');
   });
 
+  it('deve destacar a linha da busca recém-salva', async () => {
+    const linha = () => elemento.querySelector('tr[data-id="id-1"]');
+    expect(linha()?.classList).not.toContain('tabela__linha--nova');
+
+    fixture.componentRef.setInput('idBuscaNova', 'id-1');
+    await fixture.whenStable();
+
+    expect(linha()?.classList).toContain('tabela__linha--nova');
+  });
+
   it('deve exibir o texto de vazio quando não houver buscas', async () => {
     fixture.componentRef.setInput('buscas', []);
     await fixture.whenStable();

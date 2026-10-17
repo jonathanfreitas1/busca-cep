@@ -28,6 +28,7 @@ export class BuscasStore {
   private readonly _erroBusca = signal<string | null>(null);
   private readonly _carregandoHistorico = signal(false);
   private readonly _erroHistorico = signal<string | null>(null);
+  private readonly _idBuscaNova = signal<string | null>(null);
 
   // Estado público: somente leitura
 
@@ -43,15 +44,18 @@ export class BuscasStore {
   readonly carregandoHistorico = this._carregandoHistorico.asReadonly();
   /** Mensagem do último erro ao carregar ou alterar o histórico (exibida junto à tabela). */
   readonly erroHistorico = this._erroHistorico.asReadonly();
+  /** Id da busca que acabou de ser salva (a tabela destaca essa linha quando ela entra). */
+  readonly idBuscaNova = this._idBuscaNova.asReadonly();
 
   /**
    * Carrega as buscas salvas. Chamado ao entrar na página: como o store sobrevive
-   * à navegação, também limpa mensagens de erro de visitas anteriores.
+   * à navegação, também limpa mensagens de erro e o destaque de visitas anteriores.
    */
   carregar(): void {
     this._carregandoHistorico.set(true);
     this._erroHistorico.set(null);
     this._erroBusca.set(null);
+    this._idBuscaNova.set(null);
 
     this.repositorio
       .listar()
@@ -81,7 +85,10 @@ export class BuscasStore {
       )
       .subscribe({
         // Usa a busca devolvida pelo repositório: o id definitivo é o dela
-        next: (salva) => this._buscas.update((buscas) => [salva, ...buscas]),
+        next: (salva) => {
+          this._buscas.update((buscas) => [salva, ...buscas]);
+          this._idBuscaNova.set(salva.id);
+        },
         error: (erro: unknown) =>
           this._erroBusca.set(
             // Aqui o histórico só falha ao SALVAR: o ViaCEP já encontrou o endereço
