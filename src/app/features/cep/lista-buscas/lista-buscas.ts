@@ -51,9 +51,9 @@ export class ListaBuscas {
   );
 
   protected readonly colunas: readonly ColunaTabela<Busca>[] = [
-    { chave: 'cep', titulo: 'CEP', valor: (busca) => busca.cep },
+    { chave: 'cep', titulo: 'CEP', semQuebra: true, valor: (busca) => busca.cep },
     { chave: 'endereco', titulo: 'Endereço', valor: (busca) => busca.endereco.descricao },
-    { chave: 'data', titulo: 'Data' }, // molde: precisa da tag <time>
+    { chave: 'data', titulo: 'Data', semQuebra: true }, // molde: precisa da tag <time>
     { chave: 'acoes', titulo: 'Ações', tituloOculto: true, compacta: true }, // molde: botão
   ];
 

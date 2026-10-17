@@ -8,6 +8,8 @@ export interface ColunaTabela<T> {
   readonly tituloOculto?: boolean;
   /** Coluna estreita, alinhada à direita (ex.: botões de ação). */
   readonly compacta?: boolean;
+  /** Conteúdo curto que não deve quebrar linha no modo tabela (ex.: CEP, data). */
+  readonly semQuebra?: boolean;
   /** Texto da célula, usado quando a coluna não tem molde. */
   readonly valor?: (linha: T) => string;
 }

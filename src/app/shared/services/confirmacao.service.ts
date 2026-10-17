@@ -27,7 +27,9 @@ export class ConfirmacaoService {
         ariaDescribedBy: ID_MENSAGEM_CONFIRMACAO,
         autoFocus: 'first-tabbable', // o "Cancelar"
         restoreFocus: true, // ao fechar, o foco volta para quem abriu o diálogo
-        maxWidth: '28rem',
+        // Ao definir maxWidth, o limite padrão do Material (80vw) deixa de valer:
+        // no celular, o calc() garante 1rem de margem de cada lado
+        maxWidth: 'min(28rem, calc(100vw - 2rem))',
       })
       .afterClosed()
       .pipe(map((resposta) => resposta === true));

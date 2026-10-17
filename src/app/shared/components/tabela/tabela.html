@@ -16,6 +16,7 @@
           role="columnheader"
           scope="col"
           [class.tabela__celula--compacta]="coluna.compacta"
+          [class.tabela__celula--sem-quebra]="coluna.semQuebra"
           [class.visualmente-oculto]="coluna.tituloOculto"
         >
           {{ coluna.titulo }}
@@ -44,6 +45,7 @@
               role="cell"
               class="tabela__celula"
               [class.tabela__celula--compacta]="coluna.compacta"
+              [class.tabela__celula--sem-quebra]="coluna.semQuebra"
               [attr.data-label]="coluna.tituloOculto ? null : coluna.titulo"
             >
               @if (moldes().get(coluna.chave); as molde) {

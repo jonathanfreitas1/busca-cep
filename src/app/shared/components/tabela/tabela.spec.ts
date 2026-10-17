@@ -42,7 +42,7 @@ class Hospedeiro {
   readonly linhaNova = signal<string | null>(null);
   readonly porChassi = (carro: Carro): string => carro.chassi;
   readonly colunas: readonly ColunaTabela<Carro>[] = [
-    { chave: 'modelo', titulo: 'Modelo', valor: (carro) => carro.modelo },
+    { chave: 'modelo', titulo: 'Modelo', semQuebra: true, valor: (carro) => carro.modelo },
     { chave: 'cor', titulo: 'Cor' }, // molde
     { chave: 'acoes', titulo: 'Ações', tituloOculto: true, compacta: true },
   ];
@@ -90,6 +90,16 @@ describe('Tabela', () => {
 
     expect(celulas[0].getAttribute('data-label')).toBe('Modelo');
     expect(celulas[2].hasAttribute('data-label')).toBe(false); // título oculto: sem rótulo
+  });
+
+  it('deve marcar as colunas semQuebra no cabeçalho e nas células', () => {
+    const marcadas = (seletor: string) =>
+      Array.from(elemento.querySelectorAll(seletor)).map((el) =>
+        el.classList.contains('tabela__celula--sem-quebra'),
+      );
+
+    expect(marcadas('th')).toEqual([true, false, false]);
+    expect(marcadas('tbody tr:first-child td')).toEqual([true, false, false]);
   });
 
   it('deve deixar o título oculto disponível só para leitores de tela', () => {

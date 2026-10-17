@@ -152,4 +152,9 @@
     white-space: nowrap;
     text-align: right;
   }
+
+  // Valores curtos (CEP, data) ficam inteiros; quem quebra linha é a coluna de texto livre
+  .tabela__celula--sem-quebra {
+    white-space: nowrap;
+  }
 }
