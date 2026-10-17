@@ -1,0 +1,38 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Ocupa todo o espaço do <main> e centraliza o conteúdo (como no wireframe)
+:host {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.boas-vindas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $espaco-3;
+
+  &__titulo {
+    margin: 0;
+    font: var(--mat-sys-headline-small);
+    text-wrap: balance; // equilibra as linhas e evita quebrar "front-end" no meio
+
+    @include a-partir-de(md) {
+      font: var(--mat-sys-display-small);
+    }
+  }
+
+  &__autoria {
+    margin: 0;
+    font: var(--mat-sys-body-large);
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  &__acao {
+    margin-top: $espaco-3;
+  }
+}

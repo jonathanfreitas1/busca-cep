@@ -1,2 +1,17 @@
+<a class="pular-para-conteudo" href="#conteudo" (click)="pularParaConteudo($event)">
+  Pular para o conteúdo
+</a>
+
 <app-header />
-<router-outlet />
+
+<main #conteudo id="conteudo" class="conteudo container" tabindex="-1">
+  <router-outlet />
+</main>
+
+<footer class="rodape">
+  <div class="container">
+    <p class="rodape__texto">
+      Teste de front-end SCCON · Desenvolvido por Jonathan da Silva Freitas · 2026
+    </p>
+  </div>
+</footer>

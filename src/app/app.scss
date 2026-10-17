@@ -1,0 +1,62 @@
+@use 'variables' as *;
+
+// -------------------------------------------------------------
+// Shell: ocupa no mínimo a altura da tela, para o footer ficar
+// sempre no rodapé, mesmo em páginas com pouco conteúdo.
+// -------------------------------------------------------------
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+// -------------------------------------------------------------
+// "Pular para o conteúdo": fora da tela até receber foco pelo teclado
+// -------------------------------------------------------------
+.pular-para-conteudo {
+  position: absolute;
+  top: $espaco-2;
+  left: $espaco-2;
+  z-index: 20; // acima do header (z-index 10)
+  padding: $espaco-2 $espaco-3;
+  background-color: $cor-marca-contraste;
+  color: $cor-marca;
+  font-weight: 500;
+  border-radius: $raio-borda;
+  transform: translateY(-200%);
+  transition: transform $transicao;
+
+  &:focus {
+    transform: translateY(0);
+  }
+}
+
+// -------------------------------------------------------------
+// Conteúdo principal: cresce para ocupar o espaço livre
+// -------------------------------------------------------------
+.conteudo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-block: $espaco-4;
+
+  // Recebe foco só via código (tabindex="-1"); o contorno não ajuda aqui
+  &:focus {
+    outline: none;
+  }
+}
+
+// -------------------------------------------------------------
+// Rodapé
+// -------------------------------------------------------------
+.rodape {
+  padding-block: $espaco-3;
+  background-color: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-small);
+  text-align: center;
+
+  &__texto {
+    margin: 0;
+  }
+}

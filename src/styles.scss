@@ -50,3 +50,11 @@ body {
   margin: 0;
   height: 100%;
 }
+
+// Largura e altura passam a incluir padding e borda.
+// (Normalmente vem no "reboot" do Bootstrap, que não importamos.)
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
