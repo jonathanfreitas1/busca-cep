@@ -82,7 +82,13 @@ export class BuscasStore {
       .subscribe({
         // Usa a busca devolvida pelo repositório: o id definitivo é o dela
         next: (salva) => this._buscas.update((buscas) => [salva, ...buscas]),
-        error: (erro: unknown) => this._erroBusca.set(this.mensagemDe(erro)),
+                error: (erro: unknown) =>
+          this._erroBusca.set(
+            // Aqui o histórico só falha ao SALVAR: o ViaCEP já encontrou o endereço
+            erro instanceof HistoricoIndisponivelError
+              ? 'O endereço foi encontrado, mas não foi possível salvá-lo no histórico.'
+              : this.mensagemDe(erro),
+          ),
       });
   }
 

@@ -1,0 +1,10 @@
+@use 'variables' as *;
+
+.cep-page__titulo {
+  margin: 0 0 $espaco-4;
+  font: var(--mat-sys-headline-small);
+}
+
+.cep-page__secao + .cep-page__secao {
+  margin-top: $espaco-5;
+}

@@ -1,0 +1,42 @@
+<form
+  class="busca-cep"
+  role="search"
+  aria-label="Buscar endereço por CEP"
+  [formGroup]="formulario"
+  (ngSubmit)="enviar()"
+>
+  <div class="row g-2 align-items-start">
+    <div class="col-12 col-sm">
+      <mat-form-field appearance="outline" class="busca-cep__campo">
+        <mat-label>Busca por CEP</mat-label>
+        <input #campoCep matInput formControlName="cep" appCepMask placeholder="00000-000" />
+
+        @if (formulario.controls.cep.hasError('required')) {
+          <mat-error>Informe o CEP.</mat-error>
+        } @else if (formulario.controls.cep.hasError('cepInvalido')) {
+          <mat-error>Digite um CEP completo, no formato 00000-000.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 col-sm-auto">
+      <button
+        matButton="filled"
+        type="submit"
+        class="busca-cep__botao"
+        [disabled]="buscando()"
+        disabledInteractive
+      >
+        {{ buscando() ? 'Buscando…' : 'Buscar' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Região de alerta sempre presente: o leitor de tela anuncia quando o conteúdo muda -->
+  <div class="busca-cep__alerta" role="alert">
+    @if (mensagem(); as texto) {
+      <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">error</mat-icon>
+      <span>{{ texto }}</span>
+    }
+  </div>
+</form>

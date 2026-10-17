@@ -1,0 +1,30 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.busca-cep {
+  &__campo {
+    width: 100%;
+  }
+
+  // Mesma altura do campo (aparência "outline"); largura total no celular
+  &__botao {
+    width: 100%;
+    min-height: 3.5rem;
+
+    @include a-partir-de(sm) {
+      width: auto;
+    }
+  }
+
+  &__alerta {
+    display: flex;
+    align-items: center;
+    gap: $espaco-2;
+    color: var(--mat-sys-error);
+    font: var(--mat-sys-body-large);
+
+    &:empty {
+      display: none;
+    }
+  }
+}

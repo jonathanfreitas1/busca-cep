@@ -179,7 +179,9 @@ describe('BuscasStore', () => {
       store.buscarCep('01001-000');
 
       expect(store.buscas()).toEqual([]);
-      expect(store.erroBusca()).toBe('Não foi possível acessar o histórico de buscas.');
+      expect(store.erroBusca()).toBe(
+        'O endereço foi encontrado, mas não foi possível salvá-lo no histórico.',
+      );
     });
 
     it('deve limpar o erro anterior ao fazer uma nova busca', () => {
