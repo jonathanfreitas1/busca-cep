@@ -4,6 +4,33 @@ SPA para buscar endereços pelo CEP, usando a API pública do [ViaCEP](https://v
 
 Desenvolvido por **Jonathan da Silva Freitas**.
 
+## Notas para a avaliação
+
+Esta é a entrega do teste de front-end da SCCON. Todos os requisitos do PDF foram implementados; os pontos abaixo explicam onde a implementação difere do que o PDF pede, e por quê.
+
+### Angular 22 em vez de Angular 5/6
+
+O Angular 5/6 está sem suporte desde 2019/2020, exige Node 10 e traz dependências com vulnerabilidades conhecidas. Usei a versão atual mantendo todos os requisitos funcionais e de arquitetura.
+
+### Componentes standalone em vez de `NgModule`
+
+Cada módulo do diagrama (Principal, Home e CEP) é uma **feature com lazy load** (`loadChildren` + arquivo de rotas), o padrão recomendado desde o Angular 17. O carregamento sob demanda continua real: Home e Endereços saem em arquivos separados no build e só são baixados quando o usuário navega até eles (veja "Testes e build"). A tabela "Arquitetura → código" liga cada caixa do diagrama a uma pasta.
+
+### `input()` / `output()` em vez de `@Output()` + `EventEmitter`
+
+São os sucessores oficiais dos decorators, com a mesma comunicação entre componente pai e filho.
+
+### Grid do Bootstrap 5 em vez do Bootstrap 4
+
+O Angular Material cobre os componentes de formulário e navegação; como ele não tem grid de layout, uso **só o grid** do Bootstrap 5 (sem o CSS global nem o JavaScript), versão compatível com o Angular atual.
+
+### Diferenciais implementados
+
+- Logo extraído **vetorialmente** do próprio PDF (veja "Principais desafios").
+- Histórico persistido via **REST** com json-server.
+- Angular Material nos formulários e na navegação; variáveis e pseudoelementos no Sass.
+- Animação no loader da busca, transições de `:hover`/`:active` e destaque animado na linha nova.
+
 ## Funcionalidades
 
 - **Home** com boas-vindas, nome e data, e um botão que leva à busca.

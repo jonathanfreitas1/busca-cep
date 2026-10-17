@@ -20,14 +20,14 @@ describe('Home', () => {
   it('deve exibir o título de boas-vindas', () => {
     const titulo = elemento.querySelector('h1');
 
-    expect(titulo?.textContent).toContain('Bem-vindo/a ao Busca CEP');
+    expect(titulo?.textContent).toContain('Bem-vindo/a ao teste de front-end');
   });
 
   it('deve exibir o autor e a data', () => {
     const autoria = elemento.querySelector('.boas-vindas__autoria');
     const data = autoria?.querySelector('time');
 
-    expect(autoria?.textContent).toContain('Jonathan');
+    expect(autoria?.textContent).toContain('Teste realizado por Jonathan da Silva Freitas');
     expect(data?.getAttribute('datetime')).toBe('2026-10-18');
     expect(data?.textContent).toBe('18/10/2026');
   });
