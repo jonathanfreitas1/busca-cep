@@ -1,0 +1,45 @@
+<header class="header">
+  <mat-toolbar class="header__barra">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a class="header__marca" routerLink="/" aria-label="Busca CEP SCCON: ir para a página inicial">
+        <img
+          class="header__logo"
+          ngSrc="/images/logo-sccon.svg"
+          width="41"
+          height="43"
+          priority
+          alt="SCCON"
+        />
+        <span class="header__titulo">Busca CEP</span>
+      </a>
+
+      <nav class="header__menu" aria-label="Menu principal">
+        <a
+          matButton
+          class="header__link"
+          routerLink="/"
+          routerLinkActive="header__link--ativo"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ariaCurrentWhenActive="page"
+        >
+          Home
+        </a>
+
+        <button
+          matButton
+          type="button"
+          class="header__link"
+          [matMenuTriggerFor]="menuEnderecos"
+          [class.header__link--ativo]="enderecosAtivo()"
+        >
+          Endereços
+          <mat-icon iconPositionEnd fontSet="material-symbols-outlined">arrow_drop_down</mat-icon>
+        </button>
+
+        <mat-menu #menuEnderecos="matMenu">
+          <a mat-menu-item routerLink="/enderecos">Buscar Endereços</a>
+        </mat-menu>
+      </nav>
+    </div>
+  </mat-toolbar>
+</header>

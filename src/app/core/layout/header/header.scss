@@ -1,0 +1,104 @@
+@use '@angular/material' as mat;
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// -------------------------------------------------------------
+// Host: o próprio elemento <app-header>
+// Fica fixo no topo ao rolar a página.
+// -------------------------------------------------------------
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  // Cores do toolbar pela API oficial de personalização do Material
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: $cor-marca,
+      container-text-color: $cor-marca-contraste,
+    )
+  );
+
+  // Botões de texto do menu em branco (padrão seria a cor do tema)
+  @include mat.button-overrides(
+    (
+      text-label-text-color: $cor-marca-contraste,
+      text-state-layer-color: $cor-marca-contraste,
+    )
+  );
+}
+
+// -------------------------------------------------------------
+// Barra
+// -------------------------------------------------------------
+.header__barra {
+  padding-inline: 0; // o .container do Bootstrap cuida do espaçamento lateral
+}
+
+// -------------------------------------------------------------
+// Marca: logo + nome da aplicação (link para a Home)
+// -------------------------------------------------------------
+.header__marca {
+  display: flex;
+  align-items: center;
+  gap: $espaco-2;
+  color: inherit;
+  text-decoration: none;
+  border-radius: $raio-borda;
+
+  &:focus-visible {
+    outline: 2px solid $cor-marca-contraste;
+    outline-offset: $espaco-1;
+  }
+}
+
+.header__logo {
+  display: block;
+  height: 2.5rem;
+  width: auto;
+}
+
+// Nome da aplicação: só aparece a partir de telas médias
+.header__titulo {
+  display: none;
+  font: var(--mat-sys-title-medium);
+
+  @include a-partir-de(md) {
+    display: inline;
+  }
+}
+
+// -------------------------------------------------------------
+// Menu
+// -------------------------------------------------------------
+.header__menu {
+  display: flex;
+  align-items: center;
+  gap: $espaco-1;
+
+  @include a-partir-de(md) {
+    gap: $espaco-3;
+  }
+}
+
+// Indicador da página atual: barra desenhada com pseudo-elemento,
+// que "cresce" a partir do centro quando o link fica ativo.
+.header__link {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0.75rem; // mesmo recuo horizontal do botão de texto do Material
+    bottom: $espaco-1;
+    height: 2px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transition: transform $transicao;
+  }
+
+  &--ativo::after {
+    transform: scaleX(1);
+  }
+}
