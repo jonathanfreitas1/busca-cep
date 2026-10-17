@@ -1,0 +1,47 @@
+// =============================================================
+// Botões de ação (matButton="filled") no padrão do teste:
+// cor #D7DBDD, escurecem 6% no :hover e têm cantos arredondados.
+// =============================================================
+@use '@angular/material' as mat;
+@use 'variables' as *;
+
+// Tokens públicos do Material: definem as variáveis CSS --mat-button-filled-*
+:root {
+  @include mat.button-overrides(
+    (
+      filled-container-color: $cor-botao,
+      filled-label-text-color: $cor-botao-texto,
+      filled-container-shape: $raio-borda,
+      // Sem a camada translúcida nem o ripple do Material:
+      // o escurecimento é feito pela cor de fundo, com o valor exato
+      filled-hover-state-layer-opacity: 0,
+      filled-focus-state-layer-opacity: 0,
+      filled-pressed-state-layer-opacity: 0,
+      filled-ripple-color: transparent,
+    )
+  );
+}
+
+// :is(button, a) aumenta a especificidade o suficiente para vencer o
+// "transition" do próprio Material, cujo CSS é carregado depois deste
+:is(button, a)[matButton='filled'] {
+  transition:
+    background-color $transicao,
+    box-shadow $transicao;
+
+  // Só em dispositivos com mouse: no toque, o :hover "gruda" depois do toque
+  @media (hover: hover) {
+    &:hover {
+      --mat-button-filled-container-color: #{$cor-botao-hover};
+    }
+  }
+
+  &:active {
+    --mat-button-filled-container-color: #{$cor-botao-ativo};
+  }
+
+  &:focus-visible {
+    outline: 2px solid $cor-marca;
+    outline-offset: 2px;
+  }
+}
