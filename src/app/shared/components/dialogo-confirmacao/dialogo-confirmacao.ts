@@ -10,6 +10,8 @@ export interface DadosConfirmacao {
   readonly textoConfirmar?: string;
   /** Texto do botão que desiste da ação. Padrão: "Cancelar". */
   readonly textoCancelar?: string;
+  /** A ação apaga ou desfaz algo (ex.: remover): o botão de confirmar fica vermelho. */
+  readonly destrutiva?: boolean;
 }
 
 /** Id do parágrafo da mensagem: o diálogo o usa como descrição acessível (aria-describedby). */
@@ -29,12 +31,18 @@ export const ID_MENSAGEM_CONFIRMACAO = 'dialogo-confirmacao-mensagem';
       <p [id]="idMensagem">{{ dados.mensagem }}</p>
     </mat-dialog-content>
 
-    <!-- "Cancelar" vem primeiro: recebe o foco inicial (a opção segura) -->
+    <!-- "Cancelar" vem primeiro: recebe o foco inicial (a opção segura).
+         Os dois botões têm o mesmo formato; só a cor indica a ação destrutiva. -->
     <mat-dialog-actions align="end">
-      <button matButton type="button" [mat-dialog-close]="false">
+      <button matButton="filled" type="button" [mat-dialog-close]="false">
         {{ dados.textoCancelar ?? 'Cancelar' }}
       </button>
-      <button matButton="filled" type="button" [mat-dialog-close]="true">
+      <button
+        matButton="filled"
+        type="button"
+        [class.botao--perigo]="dados.destrutiva"
+        [mat-dialog-close]="true"
+      >
         {{ dados.textoConfirmar ?? 'Confirmar' }}
       </button>
     </mat-dialog-actions>

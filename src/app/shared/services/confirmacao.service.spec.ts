@@ -33,12 +33,13 @@ describe('ConfirmacaoService', () => {
     respostas = [];
   });
 
-  function abrir(textoConfirmar?: string): void {
+  function abrir(textoConfirmar?: string, destrutiva?: boolean): void {
     servico
       .confirmar({
         titulo: 'Remover busca',
         mensagem: 'Remover a busca do CEP 01001-000 do histórico?',
         textoConfirmar,
+        destrutiva,
       })
       .subscribe((resposta) => respostas.push(resposta));
   }
@@ -95,6 +96,26 @@ describe('ConfirmacaoService', () => {
     const harness = await dialogo();
     expect(await harness.getRole()).toBe('alertdialog');
     expect(await harness.getAriaDescribedby()).toBe(ID_MENSAGEM_CONFIRMACAO);
+  });
+
+  it('deve usar o mesmo formato (filled) nos dois botões', async () => {
+    abrir('Remover');
+
+    const botoes = await (await dialogo()).getAllHarnesses(MatButtonHarness);
+    const aparencias = await Promise.all(botoes.map((b) => b.getAppearance()));
+    expect(aparencias).toEqual(['filled', 'filled']);
+  });
+
+  it('deve destacar o botão de confirmar em vermelho só na ação destrutiva', async () => {
+    abrir('Remover', true);
+    const perigo = await (await (await botao('Remover')).host()).hasClass('botao--perigo');
+    expect(perigo).toBe(true);
+    await (await botao('Cancelar')).click();
+    await fixture.whenStable();
+
+    abrir('Salvar');
+    const neutro = await (await (await botao('Salvar')).host()).hasClass('botao--perigo');
+    expect(neutro).toBe(false);
   });
 
   // O foco inicial vai para o primeiro elemento focável ("first-tabbable").
