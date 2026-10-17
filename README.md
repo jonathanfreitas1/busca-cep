@@ -10,7 +10,7 @@ Desenvolvido por **Jonathan da Silva Freitas**.
 - **Header** com o logo e o menu (Home e Endereços › Buscar Endereços), fixo no topo, no bordô `#670000`.
 - **Busca por CEP** com Reactive Forms: máscara `00000-000` enquanto digita, validação por regex e borda vermelha com mensagem quando o CEP é inválido. A requisição ao ViaCEP só sai com o CEP válido.
 - **Tratamento de erros**: CEP inexistente, ViaCEP fora do ar (com timeout de 10 s) e falha ao salvar ou carregar o histórico, cada um com sua mensagem.
-- **Histórico de buscas** numa tabela com CEP, Endereço, Data e um botão para remover (com confirmação). A tabela atualiza sem recarregar a página e o histórico persiste após o F5.
+- **Histórico de buscas** numa tabela com CEP, Endereço, Data e um botão para remover (com confirmação). A tabela atualiza sem recarregar a página e o histórico persiste após o F5. Com mais de 10 buscas, a tabela ganha **paginação** (5, 10 ou 20 por página), e uma busca nova leva à página em que ela aparece.
 - **Responsivo**: no celular, cada linha da tabela vira um cartão.
 - **Animações**: loader durante a busca, destaque na linha recém-adicionada e transições de hover. Tudo desligado para quem ativa "reduzir movimento" no sistema.
 
@@ -57,7 +57,7 @@ O `db.json` já vem com três buscas de exemplo. Como o json-server grava nele, 
 ## Testes e build
 
 ```bash
-npm test         # 131 testes unitários (Vitest), em 15 arquivos
+npm test         # 140 testes unitários (Vitest), em 15 arquivos
 npm run build    # build de produção em dist/busca-cep/browser
 ```
 
@@ -65,16 +65,16 @@ O build mostra o **lazy load** funcionando: a Home (`home-routes`) e a feature d
 
 ```
 Initial chunk files | Names         |  Raw size | Estimated transfer size
-chunk-GNCVYSVI.js   | -             | 297.41 kB |                78.69 kB
-chunk-WWDJUV6F.js   | -             |  77.93 kB |                19.53 kB
-styles-LPLZLJ65.css | styles        |  62.83 kB |                 4.56 kB
-chunk-YK3XCA2B.js   | -             |  61.41 kB |                14.92 kB
-main-5AH7KO4A.js    | main          |  35.86 kB |                 9.56 kB
-                    | Initial total | 535.45 kB |               127.27 kB
+chunk-ISNNHAHI.js   | -             | 310.32 kB |                80.63 kB
+chunk-2TSXNQPC.js   | -             |  77.93 kB |                19.51 kB
+chunk-WPW4ZXPT.js   | -             |  70.28 kB |                16.67 kB
+styles-ZPZ6UBOQ.css | styles        |  63.42 kB |                 4.62 kB
+main-DJ5EY3KB.js    | main          |  35.84 kB |                 9.54 kB
+                    | Initial total | 557.79 kB |               130.96 kB
 
 Lazy chunk files    | Names         |  Raw size | Estimated transfer size
-chunk-VCRYDPT5.js   | cep-routes    | 164.46 kB |                32.20 kB
-chunk-K7ZGOTXP.js   | home-routes   |   1.43 kB |               659 bytes
+chunk-WA6UWSTC.js   | cep-routes    | 238.93 kB |                45.87 kB
+chunk-7PWKKG6U.js   | home-routes   |   1.42 kB |               685 bytes
 ```
 
 ## Deploy

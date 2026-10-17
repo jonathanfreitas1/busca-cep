@@ -1,5 +1,8 @@
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MATERIAL_ANIMATIONS } from '@angular/material/core';
+import { MatPaginatorHarness } from '@angular/material/paginator/testing';
 import { CelulaTabela } from './celula-tabela';
 import { ColunaTabela } from './coluna-tabela';
 import { Tabela } from './tabela';
@@ -28,6 +31,7 @@ const CARROS: readonly Carro[] = [
       [carregando]="carregando()"
       [textoVazio]="textoVazio()"
       [linhaNova]="linhaNova()"
+      [itensPorPagina]="itensPorPagina()"
     >
       <ng-template appCelula="cor" [appCelulaDe]="carros()" let-carro>
         <strong>{{ carro.cor }}</strong>
@@ -40,6 +44,7 @@ class Hospedeiro {
   readonly carregando = signal(false);
   readonly textoVazio = signal<string | null>('Nenhum carro cadastrado.');
   readonly linhaNova = signal<string | null>(null);
+  readonly itensPorPagina = signal<number | null>(null);
   readonly porChassi = (carro: Carro): string => carro.chassi;
   readonly colunas: readonly ColunaTabela<Carro>[] = [
     { chave: 'modelo', titulo: 'Modelo', semQuebra: true, valor: (carro) => carro.modelo },
@@ -53,7 +58,12 @@ describe('Tabela', () => {
   let elemento: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [Hospedeiro] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [Hospedeiro],
+      // O seletor de tamanho do paginador abre um painel animado: no jsdom a animação
+      // nunca termina, então as animações do Material ficam desligadas nos testes
+      providers: [{ provide: MATERIAL_ANIMATIONS, useValue: { animationsDisabled: true } }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Hospedeiro);
     elemento = fixture.nativeElement as HTMLElement;
@@ -159,5 +169,88 @@ describe('Tabela', () => {
 
     expect(document.activeElement).toBe(elemento.querySelector('table'));
     expect(elemento.querySelector('caption')?.hasAttribute('tabindex')).toBe(false);
+  });
+
+  describe('paginação', () => {
+    // n carros com chassi C1, C2, ... (na ordem)
+    const frota = (n: number): Carro[] =>
+      Array.from({ length: n }, (_, i) => ({
+        chassi: `C${i + 1}`,
+        modelo: `Carro ${i + 1}`,
+        cor: '-',
+      }));
+    const idsNaTela = () =>
+      Array.from(elemento.querySelectorAll('tbody tr[data-id]')).map((tr) =>
+        tr.getAttribute('data-id'),
+      );
+    const paginador = () =>
+      TestbedHarnessEnvironment.loader(fixture).getHarness(MatPaginatorHarness);
+
+    async function exibir(carros: Carro[], itensPorPagina = 10): Promise<void> {
+      fixture.componentInstance.itensPorPagina.set(itensPorPagina);
+      fixture.componentInstance.carros.set(carros);
+      await fixture.whenStable();
+    }
+
+    it('não deve paginar quando as linhas cabem no limite', async () => {
+      await exibir(frota(10));
+
+      expect(idsNaTela()).toHaveLength(10);
+      expect(elemento.querySelector('mat-paginator')).toBeNull();
+    });
+
+    it('deve mostrar só a primeira página e o paginador acima do limite', async () => {
+      await exibir(frota(12));
+
+      expect(idsNaTela()).toEqual(['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10']);
+      expect(await (await paginador()).getRangeLabel()).toBe('1 – 10 de 12');
+    });
+
+    it('deve avançar para a próxima página', async () => {
+      await exibir(frota(12));
+
+      await (await paginador()).goToNextPage();
+
+      expect(idsNaTela()).toEqual(['C11', 'C12']);
+      expect(await (await paginador()).getRangeLabel()).toBe('11 – 12 de 12');
+    });
+
+    it('deve trocar o tamanho da página, mantendo o paginador visível', async () => {
+      await exibir(frota(12));
+
+      await (await paginador()).setPageSize(20);
+
+      expect(idsNaTela()).toHaveLength(12);
+      expect(await (await paginador()).getRangeLabel()).toBe('1 – 12 de 12');
+    });
+
+    it('deve mostrar a última página que existe quando linhas saem da lista', async () => {
+      await exibir(frota(25));
+      await (await paginador()).goToLastPage(); // C21 a C25
+
+      await exibir(frota(20));
+
+      expect(idsNaTela()[0]).toBe('C11');
+      expect(await (await paginador()).getRangeLabel()).toBe('11 – 20 de 20');
+    });
+
+    it('não deve mudar de página quando a lista muda sem uma linha nova', async () => {
+      await exibir(frota(25));
+      await (await paginador()).goToNextPage(); // C11 a C20
+
+      await exibir(frota(25).filter((carro) => carro.chassi !== 'C1'));
+
+      expect(idsNaTela()[0]).toBe('C12'); // continua na 2ª página
+    });
+
+    it('deve ir para a página da linha nova', async () => {
+      await exibir(frota(15));
+
+      fixture.componentInstance.linhaNova.set('C13');
+      await fixture.whenStable();
+
+      expect(idsNaTela()).toContain('C13');
+      expect(elemento.querySelector('.tabela__linha--nova')?.getAttribute('data-id')).toBe('C13');
+    });
   });
 });
