@@ -36,7 +36,7 @@
         </td>
       </tr>
     } @else {
-      @for (linha of linhas(); track rastrearPor()(linha)) {
+      @for (linha of linhasVisiveis(); track rastrearPor()(linha)) {
         <tr
           role="row"
           class="tabela__linha"
@@ -74,3 +74,17 @@
     }
   </tbody>
 </table>
+
+<!-- Fora da <table>: o paginador controla a tabela, mas não faz parte dos dados dela -->
+@if (paginar() && !carregando()) {
+  <mat-paginator
+    class="tabela__paginador"
+    [attr.aria-label]="'Paginação: ' + legenda()"
+    [length]="linhas().length"
+    [pageIndex]="paginaAtual()"
+    [pageSize]="tamanhoPagina()"
+    [pageSizeOptions]="opcoesItensPorPagina()"
+    showFirstLastButtons
+    (page)="mudarPagina($event)"
+  />
+}
