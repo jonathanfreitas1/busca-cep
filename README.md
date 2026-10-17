@@ -66,7 +66,7 @@ Todos os botões seguem o padrão `#D7DBDD`, escurecendo 6% no `:hover` e com ca
 ## Como executar
 
 ```bash
-git clone <url-do-repositório>
+git clone https://github.com/jonathanfreitas1/busca-cep.git
 cd busca-cep
 npm install
 ```
