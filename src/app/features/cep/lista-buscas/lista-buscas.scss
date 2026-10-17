@@ -13,7 +13,8 @@
   }
 }
 
-// Botão quadrado só com o ícone "X" (o padrão de cor vem do _buttons.scss)
+// Botão quadrado só com o ícone de lixeira: fundo no padrão do _buttons.scss,
+// ícone no vermelho de ação destrutiva (o mesmo do "Remover" do diálogo)
 .lista-buscas__remover {
   min-width: 0;
   width: 2.5rem;
@@ -22,5 +23,6 @@
 
   mat-icon {
     margin: 0;
+    color: $cor-perigo;
   }
 }
