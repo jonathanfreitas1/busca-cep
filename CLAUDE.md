@@ -58,5 +58,5 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Prefer the `@Service` decorator over `@Injectable({providedIn: 'root'})` for new singleton services (Angular v22+)
 - Use the `inject()` function instead of constructor injection
 
-## Regras deste projeto (teste SCCON)
-- Formulários: usar Reactive Forms (requisito do teste), não Signal Forms.
+## Regras deste projeto
+- Formulários: usar Reactive Forms, não Signal Forms.

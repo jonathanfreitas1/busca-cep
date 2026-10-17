@@ -19,7 +19,7 @@
   &__titulo {
     margin: 0;
     font: var(--mat-sys-headline-small);
-    text-wrap: balance; // equilibra as linhas e evita quebrar "front-end" no meio
+    text-wrap: balance; // equilibra as linhas quando o título quebra no celular
 
     @include a-partir-de(md) {
       font: var(--mat-sys-display-small);

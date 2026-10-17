@@ -11,7 +11,7 @@ $cor-marca: #670000;
 $cor-marca-contraste: #fff;
 
 // -------------------------------------------------------------
-// Botões (requisito: #D7DBDD e escurecer 6% no :hover)
+// Botões: #D7DBDD, escurecendo 6% no :hover
 // -------------------------------------------------------------
 $cor-botao: #d7dbdd;
 $cor-botao-hover: color.adjust($cor-botao, $lightness: -6%);

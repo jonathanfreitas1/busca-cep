@@ -1,4 +1,4 @@
-# Busca CEP — Teste de front-end SCCON
+# Busca CEP
 
 SPA para buscar endereços pelo CEP, usando a API pública do [ViaCEP](https://viacep.com.br/), e manter um histórico das buscas realizadas.
 
@@ -61,7 +61,7 @@ npm test         # 131 testes unitários (Vitest), em 15 arquivos
 npm run build    # build de produção em dist/busca-cep/browser
 ```
 
-O build comprova o **lazy load** exigido: a Home (`home-routes`) e a feature de CEP (`cep-routes`) saem em arquivos separados do pacote inicial, baixados só quando o usuário navega até elas.
+O build mostra o **lazy load** funcionando: a Home (`home-routes`) e a feature de CEP (`cep-routes`) saem em arquivos separados do pacote inicial, baixados só quando o usuário navega até elas.
 
 ```
 Initial chunk files | Names         |  Raw size | Estimated transfer size
@@ -97,9 +97,9 @@ src/
 └── styles/                                    # Variáveis, mixins, botões e paleta do tema
 ```
 
-### Diagrama do PDF → código
+### Arquitetura → código
 
-| Diagrama                         | Implementação                                        |
+| Parte da arquitetura             | Implementação                                        |
 | -------------------------------- | ---------------------------------------------------- |
 | Módulo Principal                 | `src/app/app.ts` + `app.config.ts` + `app.routes.ts` |
 | Componente Header                | `src/app/core/layout/header/`                        |
@@ -109,25 +109,19 @@ src/
 | Componente de Busca de CEP       | `src/app/features/cep/busca-cep/`                    |
 | Componente de Listagem de buscas | `src/app/features/cep/lista-buscas/`                 |
 
-## Decisões e desvios do PDF
+## Decisões técnicas
 
-O PDF pede Angular 5/6. Optei pela versão atual, mantendo todos os requisitos funcionais e de arquitetura. Os desvios são estes:
+### Angular atual, com componentes standalone
 
-### Angular 22 em vez de Angular 5/6
+Em vez de `NgModule`, cada módulo da arquitetura (Principal, Home e CEP) é uma **feature com lazy load** (`loadChildren` + arquivo de rotas). É o padrão recomendado desde o Angular 17, e o lazy load é real: cada feature é um arquivo separado no build (veja a seção "Testes e build").
 
-O Angular 5/6 está sem suporte desde 2019/2020, exige Node 10 e traz dependências com vulnerabilidades conhecidas.
+### `input()` / `output()` para a comunicação entre componentes
 
-### Componentes standalone em vez de módulos (`NgModule`)
-
-Cada "módulo" do diagrama virou uma **feature com lazy load** (`loadChildren` + arquivo de rotas). É o padrão recomendado desde o Angular 17, e o lazy load continua real: cada feature é um arquivo separado no build (veja a seção "Testes e build").
-
-### `input()` / `output()` em vez de `@Output()` + `EventEmitter`
-
-São os sucessores oficiais dos decorators, com a mesma comunicação entre componente pai e filho.
+São os sucessores oficiais de `@Input()` e `@Output()` + `EventEmitter`, com a mesma comunicação entre componente pai e filho.
 
 ### Angular Material + só o grid do Bootstrap 5
 
-O PDF permite Bootstrap 4 ou Angular Material. O Material cobre os componentes de formulário e navegação; como ele não tem grid de layout, o grid do Bootstrap atende o "grid responsivo" sem trazer o CSS global nem o JavaScript do Bootstrap.
+O Material cobre os componentes de formulário e navegação; como ele não tem grid de layout, uso o grid do Bootstrap para o layout responsivo, sem trazer o CSS global nem o JavaScript do Bootstrap.
 
 ### Outras decisões
 
@@ -149,11 +143,11 @@ O PDF permite Bootstrap 4 ou Angular Material. O Material cobre os componentes d
 
 ## Principais desafios
 
-- **Lazy load sem `NgModule`**: manter a separação em "módulos" do diagrama com componentes standalone, comprovando no build que cada feature vira um arquivo à parte.
+- **Lazy load sem `NgModule`**: manter a separação em módulos (Principal, Home e CEP) com componentes standalone, comprovando no build que cada feature vira um arquivo à parte.
 - **Tabela responsiva e acessível**: no celular a tabela muda de `display` para virar cartões, e alguns navegadores deixam de anunciá-la como tabela. Os papéis ARIA explícitos resolvem, mas exigiram cuidado com o foco (o alvo do foco passou do `caption` para a própria tabela).
 - **Foco depois de remover**: quando a linha some, o botão que tinha o foco deixa de existir; o foco vai para a linha vizinha ou para a tabela vazia.
 - **Paleta da marca no Material 3**: a paleta gerada a partir de `#670000` usaria um vermelho mais claro como cor principal; o bordô exato foi fixado com `mat.theme-overrides`.
 
 ## Observações
 
-- **Logo**: o arquivo `public/images/logo-sccon.svg` é **provisório** (o oficial não foi recebido). Para trocar, basta substituir o arquivo mantendo o nome; se a proporção for diferente de 41 × 43, ajustar `width`/`height` no Header.
+- **Logo**: o arquivo `public/images/logo-sccon.svg` é **provisório**. Para trocar pelo definitivo, basta substituir o arquivo mantendo o nome; se a proporção for diferente de 41 × 43, ajustar `width`/`height` no Header.

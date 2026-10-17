@@ -20,10 +20,10 @@ describe('Home', () => {
   it('deve exibir o título de boas-vindas', () => {
     const titulo = elemento.querySelector('h1');
 
-    expect(titulo?.textContent).toContain('Bem-vindo/a ao teste de front-end');
+    expect(titulo?.textContent).toContain('Bem-vindo/a ao Busca CEP');
   });
 
-  it('deve exibir o autor e a data do teste', () => {
+  it('deve exibir o autor e a data', () => {
     const autoria = elemento.querySelector('.boas-vindas__autoria');
     const data = autoria?.querySelector('time');
 
