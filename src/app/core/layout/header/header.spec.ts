@@ -43,6 +43,7 @@ describe('Header', () => {
     const link = elemento.querySelector<HTMLAnchorElement>('a.header__marca');
 
     expect(link?.getAttribute('href')).toBe('/');
+    expect(link?.getAttribute('aria-label')).toBe('Busca CEP: ir para a página inicial');
     expect(link?.querySelector('img')?.getAttribute('alt')).toBe('SCCON');
   });
 
