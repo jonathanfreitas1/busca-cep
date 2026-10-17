@@ -168,10 +168,10 @@ describe('ListaBuscas', () => {
       expect(document.activeElement).toBe(botaoRemover('01002-000'));
     });
 
-    it('deve ir para o título da tabela quando ela ficar vazia', async () => {
+    it('deve ir para a tabela quando ela ficar vazia', async () => {
       await removerESumir(BUSCA_SE, [BUSCA_SE]);
 
-      expect(document.activeElement).toBe(elemento.querySelector('caption'));
+      expect(document.activeElement).toBe(elemento.querySelector('table'));
     });
   });
 });

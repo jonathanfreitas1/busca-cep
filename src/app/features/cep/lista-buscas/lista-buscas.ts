@@ -109,7 +109,7 @@ export class ListaBuscas {
     if (botao) {
       botao.focus();
     } else {
-      this.tabela().focarLegenda(); // a tabela ficou vazia
+      this.tabela().focar(); // a tabela ficou vazia
     }
   }
 }

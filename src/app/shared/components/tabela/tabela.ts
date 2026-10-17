@@ -46,13 +46,13 @@ export class Tabela<T> {
       ),
   );
 
-  private readonly elementoLegenda = viewChild.required<ElementRef<HTMLElement>>('legendaTabela');
+  private readonly elementoTabela = viewChild.required<ElementRef<HTMLElement>>('elementoTabela');
 
   /**
-   * Leva o foco para o título da tabela. Útil quando o elemento que tinha o foco
-   * deixa de existir (ex.: a última linha foi removida).
+   * Leva o foco para a tabela (o leitor de tela anuncia o nome dela, vindo do caption).
+   * Útil quando o elemento que tinha o foco deixa de existir (ex.: a última linha foi removida).
    */
-  focarLegenda(): void {
-    this.elementoLegenda().nativeElement.focus();
+  focar(): void {
+    this.elementoTabela().nativeElement.focus();
   }
 }

@@ -151,12 +151,13 @@ describe('Tabela', () => {
     expect(textos('tbody td')).toEqual(['Carregando…']);
   });
 
-  it('deve permitir levar o foco para a legenda', () => {
+  it('deve permitir levar o foco para a tabela, sem filhos focáveis no caption', () => {
     const tabela = fixture.debugElement.query(By.directive(Tabela))
       .componentInstance as Tabela<Carro>;
 
-    tabela.focarLegenda();
+    tabela.focar();
 
-    expect(document.activeElement).toBe(elemento.querySelector('caption'));
+    expect(document.activeElement).toBe(elemento.querySelector('table'));
+    expect(elemento.querySelector('caption')?.hasAttribute('tabindex')).toBe(false);
   });
 });

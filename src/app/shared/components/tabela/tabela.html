@@ -3,9 +3,12 @@
   São necessários porque o modo "cartão" (celular) muda o "display" da tabela
   via CSS, e alguns navegadores (ex.: Safari) deixam de anunciá-la como tabela.
 -->
-<table class="tabela" role="table">
-  <!-- tabindex="-1": pode receber foco via código (focarLegenda), sem entrar na sequência do Tab -->
-  <caption #legendaTabela class="tabela__legenda" tabindex="-1">
+<!--
+  tabindex="-1": a tabela pode receber foco via código (focar), sem entrar na sequência do Tab.
+  Fica no <table>, e não no <caption>: um filho focável dentro de role="table" é inválido.
+-->
+<table #elementoTabela class="tabela" role="table" tabindex="-1">
+  <caption class="tabela__legenda">
     <span>{{ legenda() }}</span>
   </caption>
 

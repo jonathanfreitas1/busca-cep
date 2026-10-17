@@ -112,4 +112,11 @@
   &--ativo::after {
     transform: scaleX(1);
   }
+
+  // O realce translúcido do Material é fraco sobre o bordô:
+  // mesmo contorno branco do logo, só quando o foco vem do teclado
+  &:focus-visible {
+    outline: 2px solid $cor-marca-contraste;
+    outline-offset: 2px;
+  }
 }

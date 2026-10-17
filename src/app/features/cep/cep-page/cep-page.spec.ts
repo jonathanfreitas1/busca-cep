@@ -58,6 +58,20 @@ describe('CepPage', () => {
     expect(titulo.textContent).toContain('Busca de Endereços');
   });
 
+  it('deve nomear cada seção com um h2 (h1 → h2, sem pular nível)', () => {
+    const secoes = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('section'),
+    );
+
+    const nomes = secoes.map((secao) => {
+      const titulo = secao.querySelector('h2');
+      expect(secao.getAttribute('aria-labelledby')).toBe(titulo?.id);
+      return titulo?.textContent?.trim();
+    });
+
+    expect(nomes).toEqual(['Buscar endereço', 'Histórico de buscas']);
+  });
+
   it('deve carregar o histórico ao abrir a página', () => {
     expect(store.carregar).toHaveBeenCalledTimes(1);
   });
