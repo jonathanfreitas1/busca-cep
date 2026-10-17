@@ -104,6 +104,23 @@ chunk-VCRYDPT5.js   | cep-routes    | 164.46 kB |                32.20 kB
 chunk-K7ZGOTXP.js   | home-routes   |   1.43 kB |               659 bytes
 ```
 
+## Deploy
+
+O build gera um site **estático** em `dist/busca-cep/browser`, que pode ser publicado em qualquer hospedagem de arquivos (Nginx, Apache, Netlify, Vercel, GitHub Pages etc.). Três cuidados:
+
+1. **Rotas da SPA**: o servidor deve devolver o `index.html` para qualquer caminho, senão recarregar a página em `/enderecos` dá erro 404. Exemplos:
+   - Nginx: `try_files $uri $uri/ /index.html;`
+   - Netlify: arquivo `_redirects` em `public/` com a linha `/* /index.html 200`
+2. **Subpasta**: se o site não ficar na raiz do domínio (ex.: GitHub Pages em `usuario.github.io/busca-cep/`), gere o build com o caminho base: `npm run build -- --base-href /busca-cep/`.
+3. **API do histórico**: em produção o app usa a URL de `src/environments/environment.ts` (hoje `http://localhost:3000`). Para publicar, hospede o json-server (ou outra API REST com o recurso `/buscas`) e troque essa URL antes do build. A busca no ViaCEP funciona sem configuração.
+
+Para conferir o build de produção localmente, com a API rodando (`npm run api`):
+
+```bash
+npm run build
+npx serve -s dist/busca-cep/browser -l 4300   # http://localhost:4300
+```
+
 ## Estrutura do projeto
 
 ```
