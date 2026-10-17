@@ -147,7 +147,4 @@ O Material cobre os componentes de formulário e navegação; como ele não tem 
 - **Tabela responsiva e acessível**: no celular a tabela muda de `display` para virar cartões, e alguns navegadores deixam de anunciá-la como tabela. Os papéis ARIA explícitos resolvem, mas exigiram cuidado com o foco (o alvo do foco passou do `caption` para a própria tabela).
 - **Foco depois de remover**: quando a linha some, o botão que tinha o foco deixa de existir; o foco vai para a linha vizinha ou para a tabela vazia.
 - **Paleta da marca no Material 3**: a paleta gerada a partir de `#670000` usaria um vermelho mais claro como cor principal; o bordô exato foi fixado com `mat.theme-overrides`.
-
-## Observações
-
-- **Logo**: o arquivo `public/images/logo-sccon.svg` é **provisório**. Para trocar pelo definitivo, basta substituir o arquivo mantendo o nome; se a proporção for diferente de 41 × 43, ajustar `width`/`height` no Header.
+- **Logo vetorial a partir de um PDF**: o logo só existia dentro de um PDF. Um script em Python leu os comandos de desenho da página (`m`, `l`, `c`, `f`, com as transformações `cm` e as cores em CMYK) e os traduziu para `<path>` de SVG: o resultado (`public/images/logo-sccon.svg`, ~18 KB) é o desenho original, sem imagem embutida e nítido em qualquer tamanho.
