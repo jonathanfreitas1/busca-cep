@@ -47,4 +47,21 @@
     outline: 2px solid $cor-marca;
     outline-offset: 2px;
   }
+
+  // Ação destrutiva: mesmo formato e comportamento, em vermelho.
+  // A classe soma especificidade, então vence as regras de :hover/:active acima.
+  &.botao--perigo {
+    --mat-button-filled-container-color: #{$cor-perigo};
+    --mat-button-filled-label-text-color: #{$cor-perigo-texto};
+
+    @media (hover: hover) {
+      &:hover {
+        --mat-button-filled-container-color: #{$cor-perigo-hover};
+      }
+    }
+
+    &:active {
+      --mat-button-filled-container-color: #{$cor-perigo-ativo};
+    }
+  }
 }

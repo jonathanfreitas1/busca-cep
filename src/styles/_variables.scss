@@ -18,6 +18,13 @@ $cor-botao-hover: color.adjust($cor-botao, $lightness: -6%);
 $cor-botao-ativo: color.adjust($cor-botao, $lightness: -10%);
 $cor-botao-texto: #212121;
 
+// Botão de ação destrutiva (ex.: confirmar uma remoção): mesmo vermelho do
+// --mat-sys-error do tema, com o mesmo escurecimento no :hover/:active
+$cor-perigo: #ba1a1a;
+$cor-perigo-hover: color.adjust($cor-perigo, $lightness: -6%);
+$cor-perigo-ativo: color.adjust($cor-perigo, $lightness: -10%);
+$cor-perigo-texto: #fff;
+
 // -------------------------------------------------------------
 // Bordas
 // -------------------------------------------------------------

@@ -117,13 +117,14 @@ describe('ListaBuscas', () => {
   });
 
   describe('remover', () => {
-    it('deve pedir confirmação informando o CEP e o endereço', () => {
+    it('deve pedir confirmação destrutiva informando o CEP e o endereço', () => {
       botaoRemover('01001-000')?.click();
 
       expect(confirmar).toHaveBeenCalledWith({
         titulo: 'Remover busca',
         mensagem: 'Remover a busca do CEP 01001-000 (Praça da Sé, Sé - São Paulo/SP) do histórico?',
         textoConfirmar: 'Remover',
+        destrutiva: true,
       });
     });
 

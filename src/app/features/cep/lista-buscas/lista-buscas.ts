@@ -84,6 +84,7 @@ export class ListaBuscas {
         titulo: 'Remover busca',
         mensagem: `Remover a busca do CEP ${busca.cep} (${busca.endereco.descricao}) do histórico?`,
         textoConfirmar: 'Remover',
+        destrutiva: true,
       })
       .pipe(filter((confirmou) => confirmou))
       .subscribe(() => {
